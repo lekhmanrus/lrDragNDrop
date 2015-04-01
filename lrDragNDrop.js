@@ -83,9 +83,17 @@
                     }
 
                     element.bind('dragstart', function (evt) {
+                        if(scope[attr.lrDragStart]) {
+                            scope[attr.lrDragStart]();
+                        }
                         store.hold(key, collection[scope.$index], collection, safe);
                         if(angular.isDefined(evt.dataTransfer)) {
                             evt.dataTransfer.setData('text/html', null); //FF/jQuery fix
+                        }
+                    });
+                    element.bind('dragend', function() {
+                        if(scope[attr.lrDragEnd]) {
+                            scope[attr.lrDragEnd]();
                         }
                     });
                 }
@@ -116,7 +124,7 @@
 
                 function isAfter(x, y) {
                     //check if below or over the diagonal of the box element
-                    return (element[0].offsetHeight - x * element[0].offsetHeight / element[0].offsetWidth) < y;
+                    return (y - element[0].offsetTop) - (element[0].offsetHeight / 2);
                 }
 
                 function resetStyle() {
@@ -141,7 +149,7 @@
                         dropIndex, i, l;
                     if (item !== null) {
                         dropIndex = scope.$index;
-                        dropIndex = isAfter((evt.offsetX != null) ? evt.offsetX : evt.originalEvent.layerX, (evt.offsetY != null) ? evt.offsetY : evt.originalEvent.layerY) ? dropIndex + 1 : dropIndex;
+                        dropIndex = isAfter((evt.offsetX != null) ? evt.offsetX : evt.originalEvent.layerX, (evt.offsetY != null) ? evt.offsetY : evt.originalEvent.layerY) > 0 ? dropIndex + 1 : dropIndex;
                         //srcCollection=targetCollection => we may need to apply a correction
                         if (collectionCopy.length > collection.length) {
                             for (i = 0, l = Math.min(dropIndex, collection.length - 1); i <= l; i++) {
@@ -160,14 +168,22 @@
                         resetStyle();
                         store.clean();
                     }
+                    if(scope[attr.lrDrop]) {
+                        scope[attr.lrDrop]();
+                    }
                 });
 
-                element.bind('dragleave', resetStyle);
+                element.bind('dragleave', function() {
+                    resetStyle();
+                    if(scope[attr.lrDragLeave]) {
+                        scope[attr.lrDragLeave]();
+                    }
+                });
 
                 element.bind('dragover', function (evt) {
                     var className;
                     if (store.isHolding(key)) {
-                        className = isAfter((evt.offsetX != null) ? evt.offsetX : evt.originalEvent.layerX, (evt.offsetY != null) ? evt.offsetY : evt.originalEvent.layerY) ? 'lr-drop-target-after' : 'lr-drop-target-before';
+                        className = isAfter((evt.offsetX != null) ? evt.offsetX : evt.originalEvent.layerX, (evt.offsetY != null) ? evt.offsetY : evt.originalEvent.layerY) > 0 ? 'lr-drop-target-after' : 'lr-drop-target-before';
                         if (classCache !== className && classCache !== null) {
                             element.removeClass(classCache);
                         }
@@ -175,6 +191,9 @@
                             element.addClass(className);
                         }
                         classCache = className;
+                    }
+                    if(scope[attr.lrDragOver]) {
+                        scope[attr.lrDragOver]();
                     }
                     evt.preventDefault();
                 });
@@ -192,23 +211,22 @@
 
                 var isAfter = function(x, y) {
                     //check if below or over the diagonal of the box element
-                    return (element[0].offsetHeight - x * element[0].offsetHeight / element[0].offsetWidth) < y;
-                }
+                    return (y - element[0].offsetTop) - (element[0].offsetHeight / 2);
+                };
 
                 var resetStyle = function() {
                 if(classCache !== null) {
                     element.removeClass(classCache);
                     classCache = null;
                   }
-                }
+                };
 
                 element.bind('drop', function (evt) {
                     var collectionCopy = angular.copy(collection),
                         item = store.get(key),
                         dropIndex, i, l;
                     if(item !== null) {
-                        dropIndex = scope.$index;
-                        dropIndex = isAfter((evt.offsetX != null) ? evt.offsetX : evt.originalEvent.layerX, (evt.offsetY != null) ? evt.offsetY : evt.originalEvent.layerY) ? dropIndex + 1 : dropIndex;
+                        dropIndex = 0;
                         //srcCollection=targetCollection => we may need to apply a correction
                         if(collectionCopy.length > collection.length) {
                             for(i = 0, l = Math.min(dropIndex, collection.length - 1); i <= l; i++) {
@@ -227,22 +245,33 @@
                         resetStyle();
                         store.clean();
                     }
+                    if(scope[attr.lrDrop]) {
+                        scope[attr.lrDrop]();
+                    }
                 });
 
-                element.bind('dragleave', resetStyle);
+                element.bind('dragleave', function() {
+                    resetStyle();
+                    if(scope[attr.lrDragLeave]) {
+                        scope[attr.lrDragLeave]();
+                    }
+                });
 
                 element.bind('dragover', function (evt) {
-                var className;
-                if(store.isHolding(key)) {
-                    className = isAfter((evt.offsetX != null) ? evt.offsetX : evt.originalEvent.layerX, (evt.offsetY != null) ? evt.offsetY : evt.originalEvent.layerY) ? 'lr-drop-target-after' : 'lr-drop-target-before';
-                    if(classCache !== className && classCache !== null) {
-                        element.removeClass(classCache);
+                    var className;
+                    if(store.isHolding(key)) {
+                        className = isAfter((evt.offsetX != null) ? evt.offsetX : evt.originalEvent.layerX, (evt.offsetY != null) ? evt.offsetY : evt.originalEvent.layerY) > 0 ? 'lr-drop-target-after' : 'lr-drop-target-before';
+                        if(classCache !== className && classCache !== null) {
+                            element.removeClass(classCache);
+                        }
+                        if(classCache !== className) {
+                            element.addClass(className);
+                        }
+                        classCache = className;
                     }
-                    if(classCache !== className) {
-                        element.addClass(className);
+                    if(scope[attr.lrDragOver]) {
+                        scope[attr.lrDragOver]();
                     }
-                    classCache = className;
-                }
                     evt.preventDefault();
                 });
             }
