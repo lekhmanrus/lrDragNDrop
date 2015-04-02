@@ -84,7 +84,7 @@
 
                     element.bind('dragstart', function (evt) {
                         if(scope[attr.lrDragStart]) {
-                            scope[attr.lrDragStart]();
+                            scope[attr.lrDragStart](collection[scope.$index]);
                         }
                         store.hold(key, collection[scope.$index], collection, safe);
                         if(angular.isDefined(evt.dataTransfer)) {
