@@ -29,7 +29,7 @@
 
             if (modelItem) {
                 itemIndex = modelItem.collection.indexOf(modelItem.item);
-                return modelItem.safe === true ? modelItem.item : modelItem.collection.splice(itemIndex, 1)[0];
+                return modelItem.safe === true ? ng.copy(modelItem.item) : modelItem.collection.splice(itemIndex, 1)[0];
             } else {
                 return null;
             }
