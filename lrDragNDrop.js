@@ -227,6 +227,9 @@
                         dropIndex, i, l;
                     if(item !== null) {
                         dropIndex = 0;
+                        if(attr.index) {
+                            dropIndex = attr.index;
+                        }
                         //srcCollection=targetCollection => we may need to apply a correction
                         if(collectionCopy.length > collection.length) {
                             for(i = 0, l = Math.min(dropIndex, collection.length - 1); i <= l; i++) {
