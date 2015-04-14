@@ -84,16 +84,16 @@
 
                     element.bind('dragstart', function (evt) {
                         if(scope[attr.lrDragStart]) {
-                            scope[attr.lrDragStart](collection[scope.$index], element);
+                            scope[attr.lrDragStart](collection[scope.$index], element, evt);
                         }
                         store.hold(key, collection[scope.$index], collection, safe);
                         if(angular.isDefined(evt.dataTransfer)) {
                             evt.dataTransfer.setData('text/html', null); //FF/jQuery fix
                         }
                     });
-                    element.bind('dragend', function() {
+                    element.bind('dragend', function (evt) {
                         if(scope[attr.lrDragEnd]) {
-                            scope[attr.lrDragEnd]();
+                            scope[attr.lrDragEnd](evt);
                         }
                     });
                 }
@@ -168,15 +168,15 @@
                         resetStyle();
                         store.clean();
                     }
-                    if(scope[attr.lrDrop]) {
-                        scope[attr.lrDrop]();
+                    if(scope[attr.lrOnDrop]) {
+                        scope[attr.lrOnDrop](evt);
                     }
                 });
 
-                element.bind('dragleave', function() {
+                element.bind('dragleave', function(evt) {
                     resetStyle();
                     if(scope[attr.lrDragLeave]) {
-                        scope[attr.lrDragLeave]();
+                        scope[attr.lrDragLeave](evt);
                     }
                 });
 
@@ -193,7 +193,7 @@
                         classCache = className;
                     }
                     if(scope[attr.lrDragOver]) {
-                        scope[attr.lrDragOver]();
+                        scope[attr.lrDragOver](evt);
                     }
                     evt.preventDefault();
                 });
@@ -248,15 +248,15 @@
                         resetStyle();
                         store.clean();
                     }
-                    if(scope[attr.lrDrop]) {
-                        scope[attr.lrDrop]();
+                    if(scope[attr.lrOnDrop]) {
+                        scope[attr.lrOnDrop](evt);
                     }
                 });
 
-                element.bind('dragleave', function() {
+                element.bind('dragleave', function(evt) {
                     resetStyle();
                     if(scope[attr.lrDragLeave]) {
-                        scope[attr.lrDragLeave]();
+                        scope[attr.lrDragLeave](evt);
                     }
                 });
 
@@ -273,7 +273,7 @@
                         classCache = className;
                     }
                     if(scope[attr.lrDragOver]) {
-                        scope[attr.lrDragOver]();
+                        scope[attr.lrDragOver](evt);
                     }
                     evt.preventDefault();
                 });
