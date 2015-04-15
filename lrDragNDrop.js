@@ -169,7 +169,7 @@
                         store.clean();
                     }
                     if(scope[attr.lrOnDrop]) {
-                        scope[attr.lrOnDrop](evt);
+                        scope[attr.lrOnDrop](dropIndex, evt);
                     }
                 });
 
@@ -249,7 +249,7 @@
                         store.clean();
                     }
                     if(scope[attr.lrOnDrop]) {
-                        scope[attr.lrOnDrop](evt);
+                        scope[attr.lrOnDrop](dropIndex, evt);
                     }
                 });
 
