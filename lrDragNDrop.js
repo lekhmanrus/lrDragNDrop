@@ -68,7 +68,7 @@
 
         th.lrDragSrcDirective = function(store, safe) {
             return function compileFunc(el, iattr) {
-                iattr.$set('draggable', true);
+                //iattr.$set('draggable', true);
                 return function linkFunc(scope, element, attr) {
                     var
                         collection,
