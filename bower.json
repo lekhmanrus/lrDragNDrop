@@ -1,6 +1,6 @@
 {
   "name": "lrDragNDrop",
-  "version": "1.0.2",
+  "version": "1.0.3-rc.1",
   "dependencies": {
     "angular": "~1.2.25"
   },
@@ -8,7 +8,7 @@
     "angular-mocks": "~1.2.25",
     "jquery": "~2.0.3"
   },
-  "homepage": "https://github.com/lorenzofox3/lrDragNDrop",
+  "homepage": "https://github.com/lekhmanrus/lrDragNDrop",
   "authors": [
     "RENARD Laurent <laurent34azerty@gmail.com>"
   ],
